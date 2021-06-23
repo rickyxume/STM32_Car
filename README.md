@@ -22,7 +22,7 @@
 
 ![image-20210623152911694](https://i.loli.net/2021/06/23/XAyBjmYvb1IfOFs.png)
 
-
+详见`Notes`文件夹下的课程笔记
 
 
 
