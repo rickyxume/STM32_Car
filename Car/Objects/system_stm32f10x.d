@@ -11,5 +11,6 @@
 .\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc\stm32f10x_gpio.h
 .\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\Include\stm32f10x.h
 .\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc\stm32f10x_rcc.h
+.\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc\stm32f10x_tim.h
 .\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc\stm32f10x_usart.h
 .\objects\system_stm32f10x.o: C:\Keil528\PACK\Keil\STM32F1xx_DFP\1.0.5\Device\StdPeriph_Driver\inc\misc.h
