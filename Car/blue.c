@@ -69,10 +69,85 @@ void USART_Config(void) //串口配置
 //串口的中断服务函数 只要串口1有数据接收到  就跳转到这里来
 void USART1_IRQHandler(void)
 {//先读取并判断串口的接收数据中断标志位有没有触发 
+	char blue_flag=0;//定义一个用来临时存放串口接收数据的变量
 	if(USART_GetITStatus(USART1, USART_IT_RXNE) == SET)      //检查指定的 USART1 中断发生与否
 		{ 
+			blue_flag = USART_ReceiveData(USART1);
+//			switch(blue_flag){
+//				case '0': 
+//					delay_ms(10); 
+//					CarStop();     
+//					break;
+//				case '1':
+//					delay_ms(10); 
+//					CarLeft(300);     
+//					break;
+//				case '2': 
+//					delay_ms(10); 
+//					CarRight(300);    
+//					break;
+//				case '3': 
+//					delay_ms(10); 
+//					CarBack(500);     
+//					break;
+//				case '4': 
+//					delay_ms(10); 
+//					CarGo(100);
+//					break;
+//				case '5': 
+//					delay_ms(10); 
+//					CarForwardLeft(100); 
+//					break;
+//				case '6': 
+//					delay_ms(10); 
+//					CarForwardRight(100);
+//					break;
+//				case '7': 
+//					delay_ms(10); 
+//					CarBackLeft(100);
+//					break;
+//				case '8': 
+//					delay_ms(10); 
+//					CarBackRight(100);
+//					break;
+//				case 'l': 
+//					delay_ms(10); 
+//					CarLeftAround(100);
+//					break;
+//				case 'r': 
+//					delay_ms(10); 
+//					CarRightAround(100);
+//					break;
+//				case '9':
+//					CarTest(999);
+//	////				delay_ms(500);
+//	//				CarGo(100);
+//	//				delay_ms(500); 	
+//	//				CarLeft(300);
+//	//				delay_ms(500); 
+//	//				CarRight(300); 
+//	//				delay_ms(500);
+//	//				CarGo(100);	
+//	//				delay_ms(1000); 
+//	//				CarLeftAround(100); 
+//	//				delay_ms(1000); 
+//	//				CarRightAround(100);
+//	//				delay_ms(500); 
+//	//				CarBack(500); 
+//	//				delay_ms(1000); 
+//	//				CarBackLeft(100);
+//	//				delay_ms(1000); 
+//	//				CarBack(500); 
+//	//				delay_ms(1000); 
+//	//				CarBackRight(100);
+//	//				delay_ms(1000); 
+//	//				CarStop(); 
+//					break;
+//				default: 
+//					delay_ms(10); 	
+//					CarStop();
+//					break;
+//			}		  
 			USART_ClearITPendingBit(USART1, USART_IT_RXNE);   //清除 USART1 的中断待处理位
 		}
 }
-
-

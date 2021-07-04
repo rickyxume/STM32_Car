@@ -1,5 +1,4 @@
-#include <stm32f10x.h>
-#include "stm32f10x_tim.h"
+#include "motor.h"
 
 // 左前轮
 #define LA1 GPIO_SetBits(GPIOB,GPIO_Pin_6)
@@ -15,127 +14,142 @@
 #define RB0 GPIO_ResetBits(GPIOB,GPIO_Pin_9)
 
 //占空比，数值越大速度越慢
-//左前进
-#define LF(v) TIM_SetCompare2(TIM4 , v)
 //左后退
 #define LB(v) TIM_SetCompare1(TIM4 , v)
-//右前进
-#define RF(v) TIM_SetCompare4(TIM4 , v)
+//左前进
+#define LF(v) TIM_SetCompare2(TIM4 , v)
 //右后退
 #define RB(v) TIM_SetCompare3(TIM4 , v)
+//右前进
+#define RF(v) TIM_SetCompare4(TIM4 , v)
 
-int my_TIM_Pulse = 1000;
+////左前进
+//#define LF(v) TIM4->CCR1 = v
+////左后退
+//#define LB(v) TIM4->CCR2 = v;
+////右前进
+//#define RF(v) TIM4->CCR3 = v;
+////右后退
+//#define RB(v) TIM4->CCR4 = v;
 
-void CarTest(int v)
-{
-	LF(v);
-	LB(1000);
-	RF(v+500);
-	RB(1000);
-}
 
-//前进
-void CarGo(int v)
-{
-	LF(v);
-	LB(my_TIM_Pulse);
-	RF(v);
-	RB(my_TIM_Pulse);
-}
+const u16 ARR = 1000-1; // TIM_Period
+const u16 PSC = 0; // TIM_Prescaler
 
-//停止
-void CarStop(void)
-{
-	LF(my_TIM_Pulse);
-	LB(my_TIM_Pulse);
-	RF(my_TIM_Pulse);
-	RB(my_TIM_Pulse);
-}
 
-// 原地转向左
-void CarLeftAround(int v)
-{
-	LF(my_TIM_Pulse);
-	LB(v);
-	RF(v);
-	RB(my_TIM_Pulse);
-}
+//void CarTest(int v)
+//{
+//	TIM4->CCR1 = v;//0~1999范围  数值越大  速度越大
+//	TIM4->CCR2 = 0;
+//	
+//	//右轮的速度
+//	TIM4->CCR3 = v;//0~1999范围  数值越大  速度越大
+//	TIM4->CCR4 = 0;
+//}
 
-// 原地转向右
-void CarRightAround(int v)
-{
-	LF(v);
-	LB(my_TIM_Pulse);
-	RF(my_TIM_Pulse);
-	RB(v);
-}
+////前进
+//void CarGo(int v)
+//{
+//	LB(ARR);
+//	LF(v);
+//	RB(ARR);
+//	RF(v);
+//	
+//}
 
-// 后退
-void CarBack(int v)
-{
-	LF(my_TIM_Pulse);
-	LB(v);
-	RF(my_TIM_Pulse);
-	RB(v);
-}
+////停止
+//void CarStop(void)
+//{
+//	LF(ARR);
+//	LB(ARR);
+//	RF(ARR);
+//	RB(ARR);
+//}
 
-//待优化
+//// 原地转向左
+//void CarLeftAround(int v)
+//{
+//	LF(ARR);
+//	LB(v);
+//	RF(v);
+//	RB(ARR);
+//}
 
-//差速左转
-void CarLeft(int v)
-{
-	LF(900);
-	LB(my_TIM_Pulse);
-	RF(v);
-	RB(my_TIM_Pulse);
-}
+//// 原地转向右
+//void CarRightAround(int v)
+//{
+//	LF(v);
+//	LB(ARR);
+//	RF(ARR);
+//	RB(v);
+//}
 
-//差速右转
-void CarRight(int v)
-{
-	LF(v);
-	LB(my_TIM_Pulse);
-	RF(900);
-	RB(my_TIM_Pulse);
-}
+//// 后退
+//void CarBack(int v)
+//{
+//	LF(ARR);
+//	LB(v);
+//	RF(ARR);
+//	RB(v);
+//}
 
-//向前左转
-void CarForwardLeft(int v)
-{
-	LF(v+500);
-	LB(my_TIM_Pulse);
-	RF(v);
-	RB(my_TIM_Pulse);
-}
+////待优化
 
-//向前右转
-void CarForwardRight(int v)
-{
-	LF(v);
-	LB(my_TIM_Pulse);
-	RF(v+500);
-	RB(my_TIM_Pulse);
-}
+////差速左转
+//void CarLeft(int v)
+//{
+//	LF(ARR-100);
+//	LB(ARR);
+//	RF(v);
+//	RB(ARR);
+//}
 
-//后向左倒车
-void CarBackLeft(int v)
-{
-	LF(my_TIM_Pulse);
-	LB(v+800);
-	RF(my_TIM_Pulse);
-	RB(v);
-}
+////差速右转
+//void CarRight(int v)
+//{
+//	LF(v);
+//	LB(ARR);
+//	RF(ARR-100);
+//	RB(ARR);
+//}
 
-//后向右倒车
-void CarBackRight(int v)
-{
-	LF(my_TIM_Pulse);
-	LB(v);
-	RF(my_TIM_Pulse);
-	RB(v+800);
-}
+////向前左转
+//void CarForwardLeft(int v)
+//{
+//	LF(v+500);
+//	LB(ARR);
+//	RF(v);
+//	RB(ARR);
+//}
 
-void TIM4_PWM_Init(void)
+////向前右转
+//void CarForwardRight(int v)
+//{
+//	LF(v);
+//	LB(ARR);
+//	RF(v+500);
+//	RB(ARR);
+//}
+
+////后向左倒车
+//void CarBackLeft(int v)
+//{
+//	LF(ARR);
+//	LB(v+800);
+//	RF(ARR);
+//	RB(v);
+//}
+
+////后向右倒车
+//void CarBackRight(int v)
+//{
+//	LF(ARR);
+//	LB(v);
+//	RF(ARR);
+//	RB(v+800);
+//}
+
+void TIM4_PWM_Init(u16 arr,u16 psc)
 {
 	//变量初始化
 	GPIO_InitTypeDef GPIO_InitStructure;
@@ -154,8 +168,8 @@ void TIM4_PWM_Init(void)
   GPIO_Init(GPIOB, &GPIO_InitStructure); //初始化 PB6/7/8/9
 	
 	//初始化TIM4的计数模式、分频值、重装载值等
-	TIM_TimeBaseStructure.TIM_Period = my_TIM_Pulse; //设置下一个更新事件后，装入自动重装载寄存器的值
-	TIM_TimeBaseStructure.TIM_Prescaler = 0; //设置TIM4时钟预分频值 PrescalerValue = (uint16_t) (SystemCoreClock / 24000000) - 1;
+	TIM_TimeBaseStructure.TIM_Period = arr; //设置下一个更新事件后，装入自动重装载寄存器的值
+	TIM_TimeBaseStructure.TIM_Prescaler = psc; //设置TIM4时钟预分频值 PrescalerValue = (uint16_t) (SystemCoreClock / 24000000) - 1;
 	TIM_TimeBaseStructure.TIM_ClockDivision = 0; //设置时钟分割
 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up; //向上计数模式
 	TIM_TimeBaseInit(TIM4 , &TIM_TimeBaseStructure); //根据参数初始化TIM4
@@ -168,7 +182,7 @@ void TIM4_PWM_Init(void)
 	TIM_OCInitStructure.TIM_OCNPolarity = TIM_OCPolarity_High;
 	TIM_OCInitStructure.TIM_OCIdleState = TIM_OCIdleState_Reset;
 	TIM_OCInitStructure.TIM_OCNIdleState = TIM_OCIdleState_Reset;
-	TIM_OCInitStructure.TIM_Pulse = my_TIM_Pulse;//占空比大小
+	TIM_OCInitStructure.TIM_Pulse = ARR;//占空比大小
 	
 	//数初始化TIM4_OC1234
 	TIM_OC1Init(TIM4 , &TIM_OCInitStructure);
@@ -206,4 +220,62 @@ void GPIO_init_Init(void)
 	GPIO_InitStructure.GPIO_Mode   = GPIO_Mode_Out_PP;//设置引脚模式为推挽输出模式
 	GPIO_Init(GPIOB,&GPIO_InitStructure);//调用库函数，初始化GPIO
 	GPIO_SetBits(GPIOB,GPIO_Pin_5); //PB5 = 1，使能电池供电	
+}
+
+void CarGo(void)
+{
+  TIM_SetCompare1(TIM4 , 100);  //数值越大速度越慢
+  TIM_SetCompare2(TIM4 , 900);
+  TIM_SetCompare3(TIM4 , 100);  
+  TIM_SetCompare4(TIM4 , 900);	
+}
+
+void CarStop(void)
+{
+  TIM_SetCompare1(TIM4 , 900);
+  TIM_SetCompare2(TIM4 , 900);
+  TIM_SetCompare3(TIM4 , 900);	
+  TIM_SetCompare4(TIM4 , 900);
+}
+
+void CarBack(void)
+{
+  TIM_SetCompare1(TIM4 , 900);
+  TIM_SetCompare2(TIM4 , 300);
+  TIM_SetCompare3(TIM4 , 900);	
+  TIM_SetCompare4(TIM4 , 300);
+}
+
+void CarLeft(void)
+{
+  TIM_SetCompare1(TIM4 , 900);
+  TIM_SetCompare2(TIM4 , 300);
+  TIM_SetCompare3(TIM4 , 300);
+  TIM_SetCompare4(TIM4 , 900);
+}
+
+void CarBigLeft(void)
+{
+  TIM_SetCompare1(TIM4 , 900);
+  TIM_SetCompare2(TIM4 , 100);
+  TIM_SetCompare3(TIM4 , 100);
+  TIM_SetCompare4(TIM4 , 900);
+}
+
+void CarRight(void)
+{
+  TIM_SetCompare1(TIM4 , 300);
+  TIM_SetCompare2(TIM4 , 900);
+  TIM_SetCompare3(TIM4 , 900);
+  TIM_SetCompare4(TIM4 , 300);
+  
+}
+
+void CarBigRight(void)
+{
+  TIM_SetCompare1(TIM4 , 100);
+  TIM_SetCompare2(TIM4 , 900);
+  TIM_SetCompare3(TIM4 , 900);
+  TIM_SetCompare4(TIM4 , 100);
+  
 }
